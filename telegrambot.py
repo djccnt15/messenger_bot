@@ -1,16 +1,21 @@
 import json
 import csv
+from dataclasses import dataclass
 
 import requests
 
 
+@dataclass(order=True, unsafe_hash=True)
 class BotTelegram:
     """simple telegram bot, must be initialized with token data"""
 
-    def __init__(self, token: str, mode: int = 0) -> None:
+    token: str
+    mode: int = 0
+
+    def __post_init__(self) -> None:
         # get url of chat bot
-        self.url: str = f'https://api.telegram.org/bot{token}/'
-        self.mode: int = mode
+        self.url: str = f'https://api.telegram.org/bot{self.token}/'
+        self.mode: int = self.mode
         self.data: dict = {}
 
         # get chat id
