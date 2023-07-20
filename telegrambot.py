@@ -1,14 +1,22 @@
+from abc import ABCMeta, abstractmethod
 import json
 import csv
 
 import requests
 
 
-class BotTelegram:
-    """simple telegram bot, must be initialized with token data"""
+class ChatBot(metaclass=ABCMeta):
+    def __init__(self, token: str) -> None:
+        self.url = token
 
-    def __init__(self, token: str, mode: int = 0):
-        # get url of chat bot
+    @abstractmethod
+    def send_msg(self, msg):
+        ...
+
+
+class BotTelegram(ChatBot):
+    def __init__(self, token: str, mode: int = 0) -> None:
+        super().__init__(token)
         self.url: str = f'https://api.telegram.org/bot{token}'
         self.mode: int = mode
         self.data: dict = {}
@@ -23,10 +31,7 @@ class BotTelegram:
                 self.chat_id_grp: str = response[0]['my_chat_member']['chat']['id']
 
     def send_msg(self, msg):
-        """
-        method to send message through bot
-        send message to DM if mode is 0, send message to group chat if mode is 1
-        """
+        """send message to DM if mode is 0, send message to group chat if mode is 1"""
 
         if self.mode == 0:
             self.data['chat_id'] = self.chat_id_sol
@@ -36,7 +41,7 @@ class BotTelegram:
         requests.post(url=f'{self.url}/sendMessage', data=self.data)
 
 
-def init_bots(key: str, token: str, mode: int = 0) -> BotTelegram | None:
+def init_bots(key: str, token: str, mode: int) -> BotTelegram | None:
     try:
         return BotTelegram(token, mode)
     except KeyError as e:
@@ -76,8 +81,8 @@ if __name__ == '__main__':
     print('your code')
 
     list_bot = ['bot_t.csv', 'bot_t.json']
-    bots = [b for bot in [create_bots(bot) for bot in list_bot] for b in bot]
-    for bot in bots:
+    bots_t = [b for bot in [create_bots(bot) for bot in list_bot] for b in bot]
+    for bot in bots_t:
         bot.send_msg(
             f'{datetime.now().replace(microsecond=0)} : test message from {bot.name}'
         )
