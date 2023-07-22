@@ -1,14 +1,17 @@
 {
     "bot_1": {
         "token": "HTTP_ACCESS_TOKEN",
+        "api": "telegram",
         "mode": 0
     },
     "bot_2": {
         "token": "HTTP_ACCESS_TOKEN",
+        "api": "telegram",
         "mode": 0
     },
     "bot_3": {
         "token": "HTTP_ACCESS_TOKEN",
+        "api": "telegram",
         "mode": 0
     }
 }
