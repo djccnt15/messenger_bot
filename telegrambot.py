@@ -25,7 +25,7 @@ class BotTelegram(BaseBot):
                 else:
                     self.chat_id_grp: int = res["my_chat_member"]["chat"]["id"]
             else:
-                raise Exception(f"not able to initializ")
+                raise Exception("not able to initializ")
         return self
 
     async def init_bot(self):
