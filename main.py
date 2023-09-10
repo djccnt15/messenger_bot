@@ -12,16 +12,16 @@ async def send_msg(bot_list: list, msg: str):
     await asyncio.gather(*[bot.send_msg(msg % bot.name) for bot in bot_list])
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     from datetime import datetime
 
-    print('your code')
+    print("your code")
 
-    list_bot = ['bot_t.csv', 'bot_t.json']
+    list_bot = ["bot_t.csv", "bot_t.json"]
     bots_t = [b for bot in asyncio.run(create_bot(list_bot)) for b in bot]
 
     now = datetime.now().replace(microsecond=0)
-    msg = f'{now} : test message from %s'
+    msg = f"{now} : test message from %s"
     asyncio.run(send_msg(bots_t, msg))
 
-    print('your code')
+    print("your code")

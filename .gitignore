@@ -129,7 +129,4 @@ dmypy.json
 .pyre/
 
 # workspace
-include/
-scripts/
-pyvenv.cfg
 note.py
