@@ -1,6 +1,7 @@
 from configparser import ConfigParser
+from pathlib import Path
 
-from src.config.common import RESOURCES
+RESOURCES = Path("resources")
 
 parser = ConfigParser()
 parser.read(RESOURCES / "config.ini")
