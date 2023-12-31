@@ -3,17 +3,17 @@ from contextlib import contextmanager
 from sqlalchemy.engine import URL, create_engine
 from sqlalchemy.orm import sessionmaker
 
-from src.config import config
+from src.config import configs
 
-db_info = config.parser["DB"]
+db_config = configs.config.db
 
 SQLALCHEMY_DATABASE_URL = URL.create(
-    drivername=db_info["drivername"],
-    username=db_info["username"] if db_info["username"] else None,
-    password=db_info["password"] if db_info["password"] else None,
-    host=db_info["host"] if db_info["host"] else None,
-    port=int(db_info["port"]) if db_info["port"] else None,
-    database=db_info["database"],
+    drivername=db_config.drivername,
+    username=db_config.username if db_config.username else None,
+    password=db_config.password if db_config.password else None,
+    host=db_config.host if db_config.host else None,
+    port=int(db_config.port) if db_config.port else None,
+    database=db_config.database,
 )
 
 engine = create_engine(
