@@ -3,7 +3,9 @@ from logging import StreamHandler
 from logging.handlers import TimedRotatingFileHandler
 from pathlib import Path
 
-from src.config import config
+from src.config import configs
+
+config = configs.config.log
 
 # set log directory
 log_dir = Path("logs")
@@ -12,33 +14,11 @@ try:
 except FileExistsError:
     ...
 
-# set log format
-formatter = logging.Formatter(
-    "%(asctime)s - %(levelname)s - [%(module)s:%(lineno)d] %(message)s"
-)
-
-# create TimedRotatingFileHandler
-file_handler = TimedRotatingFileHandler(
-    filename=log_dir / "log.log",
-    when="midnight",  # rotate every midnight
-    backupCount=3,  # define number of log files, set 0 to save infinity log files
-    encoding="utf-8",
-)
-file_handler.setFormatter(formatter)
-
-# create StreamHandler
-stream_handler = StreamHandler()
-stream_handler.setFormatter(formatter)
-
 # create Logger instance
 logger = logging.getLogger("logger")
 
-# add log handler to logger
-logger.addHandler(file_handler)
-# logger.addHandler(stream_handler)
-
 # set log level from config
-log_level = config.parser["DEFAULT"]["log_level"]
+log_level = config.level
 log_level_list = [0, 10, 20, 30, 40, 50]
 
 try:
@@ -52,3 +32,25 @@ if log_level not in log_level_list:
     logger.critical(ERROR_MSG)
     raise AssertionError(ERROR_MSG)
 logger.setLevel(log_level)
+
+# set log format
+formatter = logging.Formatter(
+    "%(asctime)s - %(levelname)s - [%(module)s:%(lineno)d] %(message)s"
+)
+
+# TimedRotatingFileHandler
+if config.handlers.file:
+    file_handler = TimedRotatingFileHandler(
+        filename=log_dir / "log.log",
+        when="midnight",  # rotate every midnight
+        backupCount=3,  # define number of log files, set 0 to save infinity log files
+        encoding="utf-8",
+    )
+    file_handler.setFormatter(formatter)
+    logger.addHandler(file_handler)
+
+# StreamHandler
+if config.handlers.stream:
+    stream_handler = StreamHandler()
+    stream_handler.setFormatter(formatter)
+    logger.addHandler(stream_handler)
