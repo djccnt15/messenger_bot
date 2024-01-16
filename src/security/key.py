@@ -8,12 +8,12 @@ def create_keys_rsa(
     public_key: Path | str = "public.pem",
     length: int = 2048,
 ):
-    key = RSA.generate(length)
+    key = RSA.generate(bits=length)
 
     private = key.export_key()
-    with open(private_key, "wb") as f:
+    with open(file=private_key, mode="wb") as f:
         f.write(private)
 
     public = key.publickey().export_key()
-    with open(public_key, "wb") as f:
+    with open(file=public_key, mode="wb") as f:
         f.write(public)
