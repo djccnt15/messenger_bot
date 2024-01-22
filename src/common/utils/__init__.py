@@ -1,1 +1,1 @@
-from .logger import *
+from .log_config import *
