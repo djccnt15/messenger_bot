@@ -12,11 +12,11 @@ def validate_messenger(df: pd.DataFrame, col: str):
 
     for row in df.itertuples():
         try:
-            user.UserBase(user_name=row.user_name, messenger=row[col])
+            user.UserBase(user_name=row.user_name, messenger=getattr(row, col))
         except InvalidMessengerError:
             invalid_messenger.add(row.messenger)
 
-    return sorted(list(invalid_messenger)) if invalid_messenger else False
+    return sorted(list(invalid_messenger)) if invalid_messenger else None
 
 
 def create_user_list(

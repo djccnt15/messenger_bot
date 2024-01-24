@@ -1,7 +1,8 @@
 import pandas as pd
 
+from src.common.utils import logger
 from src.config import RESOURCES
-from src.db import query
+from src.db.query import user_crud
 from src.exception import MessengerException
 from src.security import decrypt, encrypt
 
@@ -21,12 +22,15 @@ def create_user(file: str, col: str):
     )
 
     user_list = user_logic.create_user_list(user_df=user_df, token_list=token_list)
-
-    query.create_user(user_list=user_list)
+    data: list[dict[str, bytes]] = [u.model_dump() for u in user_list]
+    try:
+        user_crud.create_user(data=data)
+    except Exception as e:
+        logger.exception(e)
 
 
 def read_first_user():
-    data = query.read_first_user()
+    data = user_crud.read_first_user()
     if data is None:
         return None
 
