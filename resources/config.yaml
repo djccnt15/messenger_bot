@@ -1,0 +1,13 @@
+log:
+  level: 10
+  handlers:
+    file: true
+    stream: true
+db:
+  drivername: mysql+pymysql
+  username: root
+  password: qwer
+  host: localhost
+  port: 3306
+  database: mydb
+  echo: true

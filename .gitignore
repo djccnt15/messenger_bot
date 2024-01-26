@@ -130,3 +130,9 @@ dmypy.json
 
 # workspace
 note.py
+*.pem
+logs/
+
+# alembic
+alembic.ini
+migrations/
