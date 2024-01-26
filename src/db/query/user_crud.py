@@ -17,3 +17,11 @@ def read_first_user():
     with database.get_db() as db:
         res = db.execute(q).scalar()
     return res
+
+
+def user_list():
+    q = select(user_entity.UserInfoEntity)
+
+    with database.get_db() as db:
+        res = db.execute(q).scalars()
+        return res.all()
