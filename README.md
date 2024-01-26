@@ -2,14 +2,57 @@
 
 Simple Alarm Bot for messengers
 
+## Requires
+
+- Python 3.11
+- requirements.txt
+
+## Alembic
+
+how to revision with Alembic
+
+### initialize
+
+```
+alembic init migrations
+```
+
+### Alembic setting
+
+- set DB info to `alembic.ini`
+
+```
+sqlalchemy.url = mysql+pymysql://root:admin1015*@localhost:3306/mydb
+```
+
+- add table metadata to `migrations/env.py`
+
+```python
+from src.db.entity import *
+
+target_metadata = BaseEntity.metadata
+```
+
+### create Alembic revision
+
+```
+alembic revision --autogenerate
+```
+
+### run Alembic revision to head
+
+```
+alembic upgrade head
+```
+
 ## Messengers
 
-1. Telegram
-    - `telegrambot.py` is alarm bot for telegram
-    - need **token** and mode setting for bot. check `bot_t.json`, `bot_t.csv` files for sample
-    - send message to DM if mode is `0`, send message to group chat if mode is `1`
+API list done
 
-## To Do
+- [x] Telegram
+- [ ] Line
+- [ ] KakaoTalk
 
-1. Telegram
-    - error handling for bot data when `mode` is `str`
+### Messenger API Docs
+
+- [Telegram Bot API](https://core.telegram.org/bots/api)
