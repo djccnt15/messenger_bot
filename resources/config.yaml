@@ -4,10 +4,14 @@ log:
     file: true
     stream: true
 db:
-  drivername: mysql+pymysql
-  username: root
-  password: qwer
-  host: localhost
-  port: 3306
-  database: mydb
-  echo: true
+  url:
+    drivername: mysql+pymysql
+    username: root
+    password: qwer
+    host: localhost
+    port: 3306
+    database: mydb
+  engine:
+    echo: true
+    pool_pre_ping: true
+    pool_recycle: 3600
