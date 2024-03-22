@@ -1,3 +1,5 @@
+import asyncio
+
 from src.common.utils import LogEnum, logger
 from src.config import RESOURCES
 from src.db import database
@@ -16,7 +18,7 @@ FILENAME_INPUT_MSG = "input user file list(default: user_list.csv): "
 MESSENGER_COL_NAME = "input messenger column name of your source(default: messenger): "
 
 
-def main():
+async def main():
     logger.info(LogEnum.START)
     while True:
         print(WELCOME_MSG)
@@ -26,6 +28,7 @@ def main():
 
         if not user_input:
             logger.info(LogEnum.FINISH)
+            await database.engine.dispose()
             break
         elif user_input == "1":
             try:
@@ -50,13 +53,13 @@ def main():
                 messenger_col_name = (
                     messenger_col_name if messenger_col_name else "messenger"
                 )
-                user_process.create_user(file=filename, col=messenger_col_name)
+                await user_process.create_user(file=filename, col=messenger_col_name)
             except Exception as e:
                 logger.exception(e)
             print()
         elif user_input == "4":
             try:
-                first_user = user_process.read_first_user()
+                first_user = await user_process.read_first_user()
                 logger.info(f"stdout: {first_user}")
                 print(first_user)
             except Exception as e:
@@ -65,4 +68,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())

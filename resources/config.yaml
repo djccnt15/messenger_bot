@@ -5,13 +5,13 @@ log:
     stream: true
 db:
   url:
-    drivername: mysql+pymysql
-    username: root
+    drivername: mysql+aiomysql
+    username: asdf
     password: qwer
     host: localhost
     port: 3306
     database: mydb
   engine:
-    echo: true
+    echo: false
     pool_pre_ping: true
     pool_recycle: 3600

@@ -10,7 +10,7 @@ from ..model import user_model
 from ..service import user_logic
 
 
-def create_user(file: str, col: str):
+async def create_user(file: str, col: str):
     user_df = pd.read_csv(RESOURCES / file)
 
     invalid_messenger = user_logic.validate_messenger(df=user_df, col=col)
@@ -24,13 +24,13 @@ def create_user(file: str, col: str):
     user_list = user_logic.create_user_list(user_df=user_df, token_list=token_list)
     data: list[dict[str, bytes]] = [u.model_dump() for u in user_list]
     try:
-        user_crud.create_user(data=data)
+        await user_crud.create_user(data=data)
     except Exception as e:
         logger.exception(e)
 
 
-def read_first_user():
-    data = user_crud.read_first_user()
+async def read_first_user():
+    data = await user_crud.read_first_user()
     if data is None:
         return None
 
