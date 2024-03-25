@@ -1,4 +1,4 @@
-from typing import Generator
+from typing import Iterable
 
 import pandas as pd
 
@@ -8,20 +8,24 @@ from src.security.model import Encrypted
 
 
 def validate_messenger(df: pd.DataFrame, col: str):
-    invalid_messenger: set[str] = set()
+    invalid_messenger = set()
 
-    for row in df.itertuples():
+    rows = df.to_dict(orient="records")
+    for row in rows:
         try:
-            user.UserBase(user_name=row.user_name, messenger=getattr(row, col))
+            user.UserBase(
+                user_name=getattr(row, "user_name"),
+                messenger=getattr(row, col),
+            )
         except InvalidMessengerError:
-            invalid_messenger.add(row.messenger)
+            invalid_messenger.add(row["messenger"])
 
     return sorted(list(invalid_messenger)) if invalid_messenger else None
 
 
 def create_user_list(
     user_df: pd.DataFrame,
-    token_list: Generator[Encrypted, None, None],
+    token_list: Iterable[Encrypted],
 ):
     user_encrypt_df = pd.DataFrame([t.model_dump() for t in token_list])
 
